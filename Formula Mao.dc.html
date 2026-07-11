@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#FAF8F5}
+  body{font-family:'Inter',system-ui,sans-serif;color:#1E3A5F;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  a{color:#C41E7A;text-decoration:none}
+  a:hover{color:#9c1660}
+  img{display:block;max-width:100%}
+  ::selection{background:#C41E7A;color:#fff}
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto!important}
+  .lenis.lenis-stopped{overflow:clip}
+  @keyframes waPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,0.55)}70%{box-shadow:0 0 0 8px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+  @keyframes waArrow{0%,100%{transform:translate(0,-1px)}50%{transform:translate(4px,-1px)}}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+</helmet>
+
+<x-import component-from-global-scope="image-slot" from="./image-slot.js" hint-size="0,0" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;pointer-events:none"></x-import>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#FAF8F5"></rect>
+    <rect x="30" y="30" width="40" height="40" rx="10" fill="#1E3A5F"></rect>
+    <text x="50" y="58" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#FAF8F5" text-anchor="middle">FM</text>
+    <rect x="34" y="72" width="32" height="3" rx="1.5" fill="#C41E7A"></rect>
+  </svg>
+</template>
+
+<!-- ============ HEADER ============ -->
+<header data-header="" style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,245,0.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:box-shadow .35s ease,background .35s ease;border-bottom:1px solid rgba(30,58,95,0.06);">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <a href="#top" onClick="{{ handleNav }}" style="display:inline-flex;align-items:center;">
+      <img src="assets/logo-formula-mao.png" alt="Fórmula Mão — Farmácia de Manipulação" style="height:52px;width:auto;mix-blend-mode:multiply;">
+    </a>
+
+    <nav style="display:{{ desktopNavDisplay }};align-items:center;gap:clamp(20px,2.6vw,40px);">
+      <a href="#sobre" onClick="{{ handleNav }}" style="color:#1E3A5F;font-size:14.5px;font-weight:500;letter-spacing:0.2px;transition:color .25s;" style-hover="{{ navHover }}">Sobre</a>
+      <a href="#servicos" onClick="{{ handleNav }}" style="color:#1E3A5F;font-size:14.5px;font-weight:500;letter-spacing:0.2px;transition:color .25s;" style-hover="{{ navHover }}">Serviços</a>
+      <a href="#qualidade" onClick="{{ handleNav }}" style="color:#1E3A5F;font-size:14.5px;font-weight:500;letter-spacing:0.2px;transition:color .25s;" style-hover="{{ navHover }}">Qualidade</a>
+      <a href="#equipe" onClick="{{ handleNav }}" style="color:#1E3A5F;font-size:14.5px;font-weight:500;letter-spacing:0.2px;transition:color .25s;" style-hover="{{ navHover }}">Equipe</a>
+      <a href="#contato" onClick="{{ handleNav }}" style="color:#1E3A5F;font-size:14.5px;font-weight:500;letter-spacing:0.2px;transition:color .25s;" style-hover="{{ navHover }}">Contato</a>
+    </nav>
+
+    <a href="{{ waLink }}" target="_blank" rel="noopener" style="display:{{ desktopNavDisplay }};align-items:center;gap:9px;background:#C41E7A;color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:0.2px;transition:transform .2s ease,box-shadow .28s ease,background .2s ease;box-shadow:0 6px 20px rgba(196,30,122,0.22);" style-hover="{{ ctaHover }}" style-active="{{ ctaActive }}">
+      <span style="width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,0.35);animation:waPulse 2.4s ease-out infinite;"></span>
+      WhatsApp
+    </a>
+
+    <button onClick="{{ toggleMenu }}" aria-label="Menu" style="display:{{ mobileBtnDisplay }};flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;background:transparent;border:none;cursor:pointer;padding:0;">
+      <span style="display:block;height:2px;width:24px;background:#1E3A5F;border-radius:2px;transition:transform .3s;transform:{{ bar1Transform }};"></span>
+      <span style="display:block;height:2px;width:24px;background:#1E3A5F;border-radius:2px;transition:opacity .3s;opacity:{{ bar2Opacity }};"></span>
+      <span style="display:block;height:2px;width:24px;background:#1E3A5F;border-radius:2px;transition:transform .3s;transform:{{ bar3Transform }};"></span>
+    </button>
+  </div>
+
+  <div style="display:{{ mobilePanelDisplay }};flex-direction:column;padding:8px 24px 28px;background:rgba(250,248,245,0.98);border-bottom:1px solid rgba(30,58,95,0.08);">
+    <a href="#sobre" onClick="{{ handleNav }}" style="padding:14px 4px;color:#1E3A5F;font-size:16px;font-weight:500;border-bottom:1px solid rgba(30,58,95,0.07);">Sobre</a>
+    <a href="#servicos" onClick="{{ handleNav }}" style="padding:14px 4px;color:#1E3A5F;font-size:16px;font-weight:500;border-bottom:1px solid rgba(30,58,95,0.07);">Serviços</a>
+    <a href="#qualidade" onClick="{{ handleNav }}" style="padding:14px 4px;color:#1E3A5F;font-size:16px;font-weight:500;border-bottom:1px solid rgba(30,58,95,0.07);">Qualidade</a>
+    <a href="#equipe" onClick="{{ handleNav }}" style="padding:14px 4px;color:#1E3A5F;font-size:16px;font-weight:500;border-bottom:1px solid rgba(30,58,95,0.07);">Equipe</a>
+    <a href="#contato" onClick="{{ handleNav }}" style="padding:14px 4px;color:#1E3A5F;font-size:16px;font-weight:500;border-bottom:1px solid rgba(30,58,95,0.07);">Contato</a>
+    <a href="{{ waLink }}" target="_blank" rel="noopener" style="margin-top:18px;text-align:center;background:#C41E7A;color:#fff;padding:15px;border-radius:999px;font-size:15px;font-weight:600;transition:transform .2s ease,background .2s ease,box-shadow .28s ease;box-shadow:0 6px 20px rgba(196,30,122,0.22);" style-hover="{{ ctaHover }}" style-active="{{ ctaActive }}">Falar no WhatsApp</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section style="padding:clamp(124px,17vh,176px) 0 clamp(64px,9vw,104px);position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-140px;right:-120px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(196,30,122,0.06),transparent 70%);pointer-events:none;"></div>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(40px,6vw,80px);">
+    <div style="flex:1 1 380px;min-width:290px;order:2;">
+      <div style="position:relative;border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(30,58,95,0.16);aspect-ratio:4/5;" data-reveal="">
+        <image-slot id="fm-hero" shape="rect" fit="cover" placeholder="foto — cuidado / pele / manipulação artesanal"></image-slot>
+      </div>
+    </div>
+    <div style="flex:1 1 440px;min-width:300px;order:1;">
+      <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:26px;">
+        <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+        <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#C41E7A;">Farmácia de Manipulação · Desde 2003</span>
+      </div>
+      <h1 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(42px,6.4vw,78px);line-height:1.03;letter-spacing:-0.5px;color:#1E3A5F;margin-bottom:26px;text-wrap:balance;">
+        Qualidade que<br>nasce do <span style="color:#C41E7A;font-style:italic;">cuidado</span>
+      </h1>
+      <p data-reveal="" style="font-size:clamp(17px,1.5vw,20px);line-height:1.65;color:#5b6472;max-width:520px;margin-bottom:40px;">
+        Desde 2003 oferecendo manipulação personalizada com segurança e responsabilidade.
+      </p>
+      <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+        <a href="{{ waLink }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;background:#C41E7A;color:#fff;padding:17px 30px;border-radius:999px;font-size:15.5px;font-weight:600;letter-spacing:0.2px;transition:transform .2s ease,box-shadow .3s ease,background .2s ease;box-shadow:0 10px 30px rgba(196,30,122,0.26);" style-hover="{{ ctaHover }}" style-active="{{ ctaActive }}">
+          Fale conosco no WhatsApp
+          <span style="font-size:18px;line-height:0;transform:translateY(-1px);animation:waArrow 1.8s ease-in-out infinite;">→</span>
+        </a>
+        <a href="#servicos" onClick="{{ handleNav }}" style="display:inline-flex;align-items:center;gap:9px;color:#1E3A5F;padding:17px 8px;font-size:15.5px;font-weight:600;transition:color .28s;" style-hover="{{ navHover }}">
+          Conheça nossos serviços
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOBRE ============ -->
+<section id="sobre" style="padding:clamp(72px,9vw,120px) 0;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,88px);align-items:flex-start;">
+      <div style="flex:1 1 320px;min-width:280px;">
+        <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;">
+          <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+          <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#C41E7A;">Sobre Nós</span>
+        </div>
+        <h2 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4.2vw,50px);line-height:1.1;letter-spacing:-0.3px;color:#1E3A5F;text-wrap:balance;">
+          O tato do fazer artesanal, aplicado à sua saúde
+        </h2>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;">
+        <p data-reveal="" style="font-size:clamp(16px,1.25vw,18px);line-height:1.8;color:#5b6472;margin-bottom:22px;">
+          O conceito <strong style="color:#1E3A5F;font-weight:600;">Fórmula Mão</strong> está expresso no próprio nome: a manipulação magistral unida ao “tato”, ao fazer artesanal de medicamentos e cosméticos. A personalização das fórmulas atende às necessidades e prescrições de cada paciente, num processo quase artesanal.
+        </p>
+        <p data-reveal="" style="font-size:clamp(16px,1.25vw,18px);line-height:1.8;color:#5b6472;">
+          Nos diferenciamos pela qualidade, inovação e pelo aconchego do ambiente, com equipe qualificada de farmacêuticos e técnicos químicos e uma seleção criteriosa de matérias-primas — com apoio de laboratórios oficiais para análises.
+        </p>
+      </div>
+    </div>
+
+    <div data-stagger="" style="margin-top:clamp(56px,7vw,88px);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(20px,3vw,40px);border-top:1px solid rgba(30,58,95,0.1);padding-top:clamp(40px,5vw,56px);">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:baseline;font-family:'Playfair Display',serif;font-weight:700;color:#1E3A5F;line-height:1;">
+          <span data-count="23" style="font-size:clamp(52px,7vw,76px);">23</span>
+        </div>
+        <span style="font-size:15px;color:#8A8578;font-weight:500;">anos de experiência</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:baseline;font-family:'Playfair Display',serif;font-weight:700;color:#1E3A5F;line-height:1;">
+          <span data-count="12000" style="font-size:clamp(52px,7vw,76px);">12.000</span>
+          <span style="font-size:clamp(32px,4vw,44px);color:#C41E7A;">+</span>
+        </div>
+        <span style="font-size:15px;color:#8A8578;font-weight:500;">clientes atendidos</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:baseline;font-family:'Playfair Display',serif;font-weight:700;color:#1E3A5F;line-height:1;">
+          <span data-count="180000" style="font-size:clamp(52px,7vw,76px);">180.000</span>
+          <span style="font-size:clamp(32px,4vw,44px);color:#C41E7A;">+</span>
+        </div>
+        <span style="font-size:15px;color:#8A8578;font-weight:500;">manipulados realizados</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIÇOS ============ -->
+<section id="servicos" style="padding:clamp(72px,9vw,120px) 0;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);">
+    <div style="max-width:640px;margin-bottom:clamp(44px,5vw,64px);">
+      <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;">
+        <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+        <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#C41E7A;">Serviços</span>
+      </div>
+      <h2 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4.2vw,50px);line-height:1.1;letter-spacing:-0.3px;color:#1E3A5F;text-wrap:balance;">
+        Fórmulas sob medida para cada necessidade
+      </h2>
+    </div>
+
+    <div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:clamp(20px,2.4vw,28px);">
+      <sc-for list="{{ servicos }}" as="s" hint-placeholder-count="4">
+        <article style="background:#fff;border:1px solid rgba(30,58,95,0.07);border-radius:22px;padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;gap:16px;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;box-shadow:0 2px 10px rgba(30,58,95,0.03);" style-hover="{{ cardHover }}">
+          <span style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#C41E7A;">{{ s.num }}</span>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(21px,1.9vw,26px);font-weight:600;line-height:1.2;color:#1E3A5F;">{{ s.title }}</h3>
+          <p style="font-size:15px;line-height:1.65;color:#5b6472;">{{ s.desc }}</p>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUALIDADE (navy) ============ -->
+<section id="qualidade" style="background:#1E3A5F;color:#FAF8F5;padding:clamp(80px,10vw,128px) 0;position:relative;overflow:hidden;">
+  <div style="position:absolute;bottom:-160px;left:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(196,30,122,0.22),transparent 70%);pointer-events:none;"></div>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);position:relative;">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,72px);align-items:flex-start;">
+      <div style="flex:1 1 340px;min-width:290px;">
+        <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;">
+          <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+          <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#f3aacf;">Controle de Qualidade</span>
+        </div>
+        <h2 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4.2vw,50px);line-height:1.12;letter-spacing:-0.3px;color:#fff;margin-bottom:24px;text-wrap:balance;">
+          Rastreabilidade do insumo ao produto final
+        </h2>
+        <p data-reveal="" style="font-size:clamp(16px,1.25vw,18px);line-height:1.8;color:rgba(250,248,245,0.72);max-width:440px;">
+          Segurança que você não vê, mas sente em cada fórmula. Trabalhamos com fornecedores auditados e protocolos rigorosos em todas as etapas.
+        </p>
+      </div>
+      <div data-stagger="" style="flex:1 1 420px;min-width:300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+        <sc-for list="{{ qualidade }}" as="q" hint-placeholder-count="5">
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;transition:background .3s ease,border-color .3s ease;" style-hover="{{ qualityHover }}">
+            <span style="width:9px;height:9px;transform:rotate(45deg);background:#C41E7A;"></span>
+            <p style="font-size:14.5px;line-height:1.55;color:rgba(250,248,245,0.9);">{{ q }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EQUIPE ============ -->
+<section id="equipe" style="padding:clamp(72px,9vw,120px) 0;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);">
+    <div style="max-width:640px;margin-bottom:clamp(44px,5vw,64px);">
+      <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;">
+        <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+        <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#C41E7A;">Equipe Técnica</span>
+      </div>
+      <h2 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4.2vw,50px);line-height:1.1;letter-spacing:-0.3px;color:#1E3A5F;text-wrap:balance;">
+        Responsabilidade em mãos especializadas
+      </h2>
+    </div>
+
+    <div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,3vw,36px);">
+      <article style="display:flex;gap:24px;align-items:center;background:#fff;border:1px solid rgba(30,58,95,0.07);border-radius:22px;padding:26px;box-shadow:0 2px 12px rgba(30,58,95,0.04);">
+        <div style="flex:0 0 auto;width:112px;height:112px;border-radius:50%;overflow:hidden;box-shadow:0 8px 22px rgba(30,58,95,0.12);">
+          <image-slot id="fm-bia" shape="circle" placeholder="foto"></image-slot>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:23px;font-weight:600;color:#1E3A5F;">Beatriz Deppe</h3>
+          <span style="font-size:14px;font-weight:600;color:#C41E7A;">Farmacêutica Responsável · CRF/RS 2812</span>
+          <p style="font-size:14px;line-height:1.55;color:#8A8578;">Aperfeiçoamento em Cosmetologia e controle de qualidade.</p>
+        </div>
+      </article>
+      <article style="display:flex;gap:24px;align-items:center;background:#fff;border:1px solid rgba(30,58,95,0.07);border-radius:22px;padding:26px;box-shadow:0 2px 12px rgba(30,58,95,0.04);">
+        <div style="flex:0 0 auto;width:112px;height:112px;border-radius:50%;overflow:hidden;box-shadow:0 8px 22px rgba(30,58,95,0.12);">
+          <image-slot id="fm-fer" shape="circle" placeholder="foto"></image-slot>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:23px;font-weight:600;color:#1E3A5F;">Fernanda Hartel</h3>
+          <span style="font-size:14px;font-weight:600;color:#C41E7A;">Farmacêutica Responsável · CRF/RS 8643</span>
+          <p style="font-size:14px;line-height:1.55;color:#8A8578;">Especialista em Manipulação Magistral.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section id="contato" style="padding:clamp(72px,9vw,120px) 0;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(36px,4vw,56px);align-items:stretch;">
+      <div style="flex:1 1 380px;min-width:300px;">
+        <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;">
+          <span style="width:26px;height:1.5px;background:#C41E7A;"></span>
+          <span style="font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#C41E7A;">Contato</span>
+        </div>
+        <h2 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4.2vw,50px);line-height:1.1;letter-spacing:-0.3px;color:#1E3A5F;margin-bottom:36px;text-wrap:balance;">
+          Venha nos visitar
+        </h2>
+
+        <div data-stagger="" style="display:flex;flex-direction:column;gap:26px;">
+          <div style="display:flex;gap:16px;">
+            <span style="flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:rgba(196,30,122,0.09);display:flex;align-items:center;justify-content:center;color:#C41E7A;font-weight:700;">◉</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8A8578;margin-bottom:4px;">Endereço</div>
+              <div style="font-size:16px;line-height:1.55;color:#1E3A5F;">Av. Cristóvão Colombo, 3197 — Higienópolis<br>Porto Alegre / RS — CEP 90540-145</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;">
+            <span style="flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:rgba(196,30,122,0.09);display:flex;align-items:center;justify-content:center;color:#C41E7A;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C41E7A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <div>
+              <div style="font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8A8578;margin-bottom:4px;">Telefone &amp; WhatsApp</div>
+              <div style="font-size:16px;line-height:1.55;color:#1E3A5F;"><a href="tel:+555133431166" style="color:#1E3A5F;">(51) 3343-1166</a> &nbsp;·&nbsp; <a href="{{ waLink }}" target="_blank" rel="noopener">(51) 98585-9092</a></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;">
+            <span style="flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:rgba(196,30,122,0.09);display:flex;align-items:center;justify-content:center;color:#C41E7A;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#C41E7A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 1.8"/></svg></span>
+            <div>
+              <div style="font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8A8578;margin-bottom:4px;">Horário</div>
+              <div style="font-size:16px;line-height:1.55;color:#1E3A5F;">Seg–Sex 8h15–18h &nbsp;·&nbsp; Sáb 9h–12h</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;">
+            <span style="flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:rgba(196,30,122,0.09);display:flex;align-items:center;justify-content:center;color:#C41E7A;font-weight:700;">@</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8A8578;margin-bottom:4px;">Redes</div>
+              <div style="font-size:16px;line-height:1.55;color:#1E3A5F;"><a href="https://instagram.com/farmaciaformulamao" target="_blank" rel="noopener">@farmaciaformulamao</a> &nbsp;·&nbsp; <a href="https://facebook.com/FormulaMao" target="_blank" rel="noopener">FormulaMao</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal="" style="flex:1 1 400px;min-width:300px;display:flex;">
+        <a href="https://www.google.com/maps?q=Av.%20Crist%C3%B3v%C3%A3o%20Colombo%203197%20Porto%20Alegre%20RS" target="_blank" rel="noopener" style="display:block;width:100%;min-height:400px;border-radius:24px;overflow:hidden;box-shadow:0 24px 56px rgba(30,58,95,0.14);border:1px solid rgba(30,58,95,0.06);background:#fff;">
+          <img src="assets/mapa-formula-mao.png" alt="Mapa — Fórmula Mão, Av. Cristóvão Colombo, 3197, Porto Alegre/RS" style="width:100%;height:100%;min-height:400px;object-fit:cover;display:block;">
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:#1E3A5F;color:rgba(250,248,245,0.72);padding:clamp(56px,7vw,80px) 0 40px;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,48px);">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-start;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.12);">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:300px;">
+        <div style="background:#fff;border-radius:14px;padding:14px 18px;align-self:flex-start;">
+          <img src="assets/logo-formula-mao.png" alt="Fórmula Mão" style="height:44px;width:auto;">
+        </div>
+        <span style="font-size:14px;color:rgba(250,248,245,0.6);line-height:1.6;">Manipulação magistral personalizada, com o cuidado artesanal desde 2003.</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,72px);">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#f3aacf;">Navegação</span>
+          <a href="#sobre" onClick="{{ handleNav }}" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Sobre</a>
+          <a href="#servicos" onClick="{{ handleNav }}" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Serviços</a>
+          <a href="#qualidade" onClick="{{ handleNav }}" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Qualidade</a>
+          <a href="#equipe" onClick="{{ handleNav }}" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Equipe</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#f3aacf;">Contato</span>
+          <a href="tel:+555133431166" style="color:rgba(250,248,245,0.72);font-size:14.5px;">(51) 3343-1166</a>
+          <a href="{{ waLink }}" target="_blank" rel="noopener" style="color:rgba(250,248,245,0.72);font-size:14.5px;">WhatsApp</a>
+          <a href="https://instagram.com/farmaciaformulamao" target="_blank" rel="noopener" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Instagram</a>
+          <a href="https://facebook.com/FormulaMao" target="_blank" rel="noopener" style="color:rgba(250,248,245,0.72);font-size:14.5px;">Facebook</a>
+        </div>
+      </div>
+    </div>
+    <div style="padding-top:28px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-size:13px;color:rgba(250,248,245,0.5);">
+      <span>© 2026 Fórmula Mão · Av. Cristóvão Colombo, 3197 — Porto Alegre/RS</span>
+      <span>CNPJ 05.958.168/0001-28</span>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { w: (typeof window !== 'undefined' ? window.innerWidth : 1200), menuOpen: false };
+
+  componentDidMount() {
+    this._onResize = () => {
+      const w = window.innerWidth;
+      this.setState(s => ({ w, menuOpen: w > 860 ? false : s.menuOpen }));
+    };
+    window.addEventListener('resize', this._onResize);
+    this._initWhenReady(0);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    try { if (this._lenis && this._lenis.destroy) this._lenis.destroy(); } catch (e) {}
+    if (window.ScrollTrigger) window.ScrollTrigger.getAll().forEach(t => t.kill());
+  }
+
+  _initWhenReady(tries) {
+    if (this._done) return;
+    const ready = window.gsap && window.ScrollTrigger && window.Lenis;
+    if (ready || tries > 120) { this._initAnim(); return; }
+    setTimeout(() => this._initWhenReady(tries + 1), 55);
+  }
+
+  _initAnim() {
+    if (this._done) return;
+    this._done = true;
+    const gsap = window.gsap;
+    const ST = window.ScrollTrigger;
+    const root = (this.rootEl && this.rootEl.ownerDocument) ? this.rootEl : document;
+    const q = sel => Array.from(document.querySelectorAll(sel));
+
+    // ---- Lenis smooth scroll ----
+    if (window.Lenis) {
+      try {
+        const lenis = new window.Lenis({
+          duration: 1.1,
+          easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true
+        });
+        this._lenis = lenis;
+        window.__fmLenis = lenis;
+        if (gsap && ST) {
+          lenis.on('scroll', ST.update);
+          gsap.ticker.add(t => lenis.raf(t * 1000));
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+          requestAnimationFrame(raf);
+        }
+      } catch (e) {}
+    }
+
+    // ---- header shadow on scroll ----
+    const header = document.querySelector('[data-header]');
+    const onScroll = () => {
+      const y = window.scrollY || window.pageYOffset || 0;
+      if (!header) return;
+      const on = y > 8;
+      header.style.boxShadow = on ? '0 6px 28px rgba(30,58,95,0.09)' : 'none';
+      header.style.background = on ? 'rgba(250,248,245,0.92)' : 'rgba(250,248,245,0.62)';
+    };
+    if (this._lenis) this._lenis.on('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (!gsap || !ST) return;
+    gsap.registerPlugin(ST);
+
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    // ---- staggered groups ----
+    q('[data-stagger]').forEach(group => {
+      const kids = Array.from(group.children);
+      if (!kids.length) return;
+      gsap.set(kids, { autoAlpha: 0, y: 28 });
+      gsap.to(kids, {
+        autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.11,
+        scrollTrigger: { trigger: group, start: 'top 82%' }
+      });
+    });
+
+    // ---- single reveals ----
+    q('[data-reveal]').forEach(el => {
+      gsap.set(el, { autoAlpha: 0, y: 28 });
+      gsap.to(el, {
+        autoAlpha: 1, y: 0, duration: 0.85, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 86%' }
+      });
+    });
+
+    // ---- count-up ----
+    const fmt = n => Math.round(n).toLocaleString('pt-BR');
+    q('[data-count]').forEach(el => {
+      const end = parseInt(el.dataset.count, 10) || 0;
+      el.textContent = '0';
+      const obj = { v: 0 };
+      ST.create({
+        trigger: el, start: 'top 88%', once: true,
+        onEnter: () => gsap.to(obj, {
+          v: end, duration: 2, ease: 'power2.out',
+          onUpdate: () => { el.textContent = fmt(obj.v); }
+        })
+      });
+    });
+
+    ST.refresh();
+  }
+
+  toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
+
+  handleNav = (e) => {
+    const a = e.currentTarget;
+    const href = a.getAttribute('href') || '';
+    if (href.charAt(0) === '#') {
+      e.preventDefault();
+      const target = href === '#top' ? document.body : document.querySelector(href);
+      this.setState({ menuOpen: false });
+      const doScroll = () => {
+        if (window.__fmLenis && window.__fmLenis.scrollTo) {
+          window.__fmLenis.scrollTo(href === '#top' ? 0 : target, { offset: -84, duration: 1.15 });
+        } else if (target) {
+          const top = href === '#top' ? 0 : (target.getBoundingClientRect().top + (window.scrollY || 0) - 84);
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      };
+      doScroll();
+    }
+  };
+
+  renderVals() {
+    const w = this.state.w || 1200;
+    const isMobile = w <= 860;
+    const open = this.state.menuOpen;
+    return {
+      waLink: 'https://wa.me/5551985859092?text=' + encodeURIComponent('Olá! Gostaria de saber mais sobre a manipulação personalizada.'),
+      handleNav: this.handleNav,
+      toggleMenu: this.toggleMenu,
+
+      desktopNavDisplay: isMobile ? 'none' : 'flex',
+      mobileBtnDisplay: isMobile ? 'flex' : 'none',
+      mobilePanelDisplay: (isMobile && open) ? 'flex' : 'none',
+      bar1Transform: open ? 'translateY(7px) rotate(45deg)' : 'none',
+      bar2Opacity: open ? 0 : 1,
+      bar3Transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none',
+
+      navHover: { color: '#C41E7A' },
+      ctaHover: { transform: 'translateY(-2px)', boxShadow: '0 12px 32px rgba(196,30,122,0.34)', background: '#d1218a' },
+      ctaActive: { transform: 'translateY(0) scale(0.96)', background: '#8f145a', boxShadow: '0 4px 14px rgba(143,20,90,0.4)' },
+      cardHover: { transform: 'translateY(-6px)', boxShadow: '0 18px 40px rgba(30,58,95,0.1)', borderColor: 'rgba(196,30,122,0.25)' },
+      qualityHover: { background: 'rgba(255,255,255,0.09)', borderColor: 'rgba(196,30,122,0.4)' },
+
+      servicos: [
+        { num: '01', title: 'Manipulação Personalizada', desc: 'Prescrição médica ou estética, com dose adaptada e fracionada conforme a necessidade de cada paciente.' },
+        { num: '02', title: 'Dermocosméticos e Estética', desc: 'Anti-idade, hidratantes, peelings, séruns e cuidados específicos para cada tipo de pele.' },
+        { num: '03', title: 'Suplementação e Nutrição', desc: 'Medicina integrativa e esportiva: nutracêuticos, vitaminas, minerais e extratos botânicos.' },
+        { num: '04', title: 'Protocolos para profissionais da estética', desc: 'Desenvolvimento de séruns, boosters, máscaras e loções sob medida para profissionais.' }
+      ],
+      qualidade: [
+        'Fornecedores auditados e matérias-primas com laudos certificados.',
+        'Parceria com a Pharmacontrol — exigência Anvisa para análises terceirizadas.',
+        'Rastreabilidade completa, do insumo ao produto final.',
+        'Protocolos rigorosos de controle ambiental.',
+        'Seleção criteriosa com apoio de laboratórios oficiais.'
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
